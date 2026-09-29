@@ -1,0 +1,271 @@
+{
+  "project": "RMC Web Solutions",
+  "type": "dev-preview",
+  "sourceCommit": "68da63219000",
+  "workingTreeDirty": true,
+  "generatedAt": "2026-09-29T17:30:42.455Z",
+  "stagingApiOrigin": "https://rmc-web-solutions-api-prod.onrender.com",
+  "qaLive": false,
+  "bookingLive": false,
+  "commerceLive": false,
+  "note": "Stabilni DEV QA SITE ID-jevi. Samo eksplicitno omogućeni scenariji imaju staging transport. Nikada nema koda ili vlasničkog tokena u javnim fajlovima.",
+  "scenarios": [
+    {
+      "slug": "minimarket",
+      "label": "Minimarket",
+      "category": "commerce",
+      "businessId": "grocery-store",
+      "modules": [
+        "hero",
+        "featured",
+        "catalog",
+        "cart",
+        "contact"
+      ],
+      "features": "Korpa i priprema porudžbine",
+      "featureLabel": "Korpa i priprema porudžbine",
+      "hero": "assets/images/curated/retail/grocery-store/hero/grocery_store_hero_interior_01.jpg",
+      "capabilities": {
+        "commerce": true,
+        "booking": false,
+        "timingMode": null,
+        "wineTastings": false,
+        "butcherGrillService": false
+      },
+      "files": 21,
+      "siteId": "QseEDoCrhqdHvakxGvQ41J8i",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "butik",
+      "label": "Modni butik",
+      "category": "commerce",
+      "businessId": "fashion-shop",
+      "modules": [
+        "hero",
+        "featured",
+        "catalog",
+        "cart",
+        "contact"
+      ],
+      "features": "Korpa i priprema porudžbine",
+      "featureLabel": "Korpa i priprema porudžbine",
+      "hero": "assets/images/curated/retail/fashion-boutique/hero/fashion_boutique_hero_01.jpg",
+      "capabilities": {
+        "commerce": true,
+        "booking": false,
+        "timingMode": null,
+        "wineTastings": false,
+        "butcherGrillService": false
+      },
+      "files": 26,
+      "siteId": "2Peu17pSgiZz9cl8TQbK6Z7i",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "auto-servis",
+      "label": "Auto-servis",
+      "category": "day-part",
+      "businessId": "auto-service",
+      "modules": [
+        "hero",
+        "services",
+        "booking",
+        "contact"
+      ],
+      "features": "Zahtev — izbor dela dana",
+      "featureLabel": "Zahtev — izbor dela dana",
+      "hero": "assets/images/curated/services/auto-service/hero/auto_service_hero_01.jpg",
+      "capabilities": {
+        "commerce": false,
+        "booking": true,
+        "timingMode": "DAY_PART",
+        "wineTastings": false,
+        "butcherGrillService": false
+      },
+      "files": 14,
+      "siteId": "Z3Ehb3WYd2W721LUB4Y8DuHs",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "vodoinstalater",
+      "label": "Vodoinstalater",
+      "category": "day-part",
+      "businessId": "plumber",
+      "modules": [
+        "hero",
+        "services",
+        "booking",
+        "contact"
+      ],
+      "features": "Zahtev — izbor dela dana",
+      "featureLabel": "Zahtev — izbor dela dana",
+      "hero": "assets/images/curated/services/plumbing/hero/plumbing_hero_01.jpg",
+      "capabilities": {
+        "commerce": false,
+        "booking": true,
+        "timingMode": "DAY_PART",
+        "wineTastings": false,
+        "butcherGrillService": false
+      },
+      "files": 14,
+      "siteId": "-l0TtTRUAW1cilRuxl4Ib--a",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "vinoteka",
+      "label": "Vinoteka i degustacije",
+      "category": "combined",
+      "businessId": "wine-shop",
+      "modules": [
+        "hero",
+        "featured",
+        "catalog",
+        "cart",
+        "wine-tasting",
+        "contact"
+      ],
+      "features": "Korpa i priprema porudžbine · Degustacije — datum i vreme",
+      "featureLabel": "Korpa i priprema porudžbine · Degustacije — datum i vreme",
+      "hero": "assets/images/curated/retail/wine-shop/hero/wine_shop_hero_signature_selection.jpg",
+      "capabilities": {
+        "commerce": true,
+        "booking": true,
+        "timingMode": "EXACT_TIME",
+        "wineTastings": true,
+        "butcherGrillService": false
+      },
+      "files": 17,
+      "siteId": "2JpwLJCPo9o8Bvp-r1owwqVz",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "mesara",
+      "label": "Mesara i posebna priprema",
+      "category": "combined",
+      "businessId": "butcher-shop",
+      "modules": [
+        "hero",
+        "featured",
+        "catalog",
+        "cart",
+        "contact"
+      ],
+      "features": "Korpa i priprema porudžbine · Posebna priprema mesa",
+      "featureLabel": "Korpa i priprema porudžbine · Posebna priprema mesa",
+      "hero": "assets/images/curated/retail/butcher-shop/hero/butcher_shop_hero_counter_01.jpg",
+      "capabilities": {
+        "commerce": true,
+        "booking": false,
+        "timingMode": null,
+        "wineTastings": false,
+        "butcherGrillService": true
+      },
+      "files": 21,
+      "siteId": "tXb77sBZPQMMQ97Yr6OPDUFE",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "frizer",
+      "label": "Frizerski salon",
+      "category": "exact-time",
+      "businessId": "hair-salon",
+      "modules": [
+        "hero",
+        "services",
+        "booking",
+        "contact"
+      ],
+      "features": "Zahtev — datum i vreme",
+      "featureLabel": "Zahtev — datum i vreme",
+      "hero": "assets/images/curated/beauty/hair-salon/hero/hair_hero_01.jpg",
+      "capabilities": {
+        "commerce": false,
+        "booking": true,
+        "timingMode": "EXACT_TIME",
+        "wineTastings": false,
+        "butcherGrillService": false
+      },
+      "files": 14,
+      "siteId": "X2NQfB8OQ-16VZ0FVjfbahha",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "restoran",
+      "label": "Restoran",
+      "category": "exact-time",
+      "businessId": "restaurant",
+      "modules": [
+        "hero",
+        "services",
+        "booking",
+        "contact"
+      ],
+      "features": "Zahtev — datum i vreme",
+      "featureLabel": "Zahtev — datum i vreme",
+      "hero": "assets/images/curated/food/restaurant/hero/restaurant_hero_01.jpg",
+      "capabilities": {
+        "commerce": false,
+        "booking": true,
+        "timingMode": "EXACT_TIME",
+        "wineTastings": false,
+        "butcherGrillService": false
+      },
+      "files": 14,
+      "siteId": "lNGSp8wlzatOx-L9MbBoWtDZ",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    },
+    {
+      "slug": "konsultant",
+      "label": "Poslovni konsultant",
+      "category": "exact-time",
+      "businessId": "consultant",
+      "modules": [
+        "hero",
+        "services",
+        "booking",
+        "contact"
+      ],
+      "features": "Zahtev — datum i vreme",
+      "featureLabel": "Zahtev — datum i vreme",
+      "hero": "assets/images/curated/professional-office/business-consulting/hero/business_consulting_hero_01.jpg",
+      "capabilities": {
+        "commerce": false,
+        "booking": true,
+        "timingMode": "EXACT_TIME",
+        "wineTastings": false,
+        "butcherGrillService": false
+      },
+      "files": 14,
+      "siteId": "CrTDzQPaTMljQoY5M---MUUc",
+      "qaLive": false,
+      "bookingLive": false,
+      "commerceLive": false,
+      "paired": false
+    }
+  ]
+}
