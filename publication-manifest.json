@@ -1,8 +1,8 @@
 {
   "type": "web-solutions-public",
-  "sourceCommit": "75a6c0e1fb6c",
+  "sourceCommit": "812e3d6ba817",
   "workingTreeDirty": true,
-  "generatedAt": "2026-09-30T13:26:54.418Z",
+  "generatedAt": "2026-09-30T13:51:25.756Z",
   "api": "https://rmc-web-solutions-api-prod.onrender.com",
   "basePath": "/web-solutions-public/",
   "marketingDemos": 6,
