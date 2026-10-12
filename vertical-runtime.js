@@ -1,4 +1,4 @@
-/* V48 service-card CTA fix. Preview and standalone export use identical JS. */
+/* V48.1 service-card CTA fix. Preview and standalone export use identical JS. */
 (()=>{'use strict';
 const tag=document.getElementById('verticalData');if(!tag)return;
 let site;try{site=JSON.parse(tag.textContent)}catch{return;}
@@ -9,10 +9,11 @@ for(const el of form.querySelectorAll('input[type="date"]'))el.min=today();
 for(const el of form.querySelectorAll('input[type="month"]'))el.min=today().slice(0,7);
 function jump(node){
  if(!node)return;
+ const scroller=document.scrollingElement||document.documentElement;
+ const header=document.querySelector('.site-header')?.getBoundingClientRect().height||0;
+ const top=Math.max(0,scroller.scrollTop+node.getBoundingClientRect().top-header-15);
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- try{node.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'})}catch{node.scrollIntoView(true)}
- const header=document.querySelector('.site-header')?.offsetHeight||0;
- if(header)requestAnimationFrame(()=>window.scrollBy({top:-(header+15),behavior:'auto'}));
+ try{scroller.scrollTo({top,behavior:reduced?'auto':'smooth'})}catch{window.scrollTo(0,top)}
 }
 document.addEventListener('click',e=>{
  const target=e.target instanceof Element?e.target:e.target?.parentElement;
