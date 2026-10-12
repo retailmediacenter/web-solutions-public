@@ -20,7 +20,6 @@
    }
  };
  function setup(dialog){if(dialog.dataset.modalSystem===D)return;
-   // A native dialog remains the modal/focus implementation; this layer unifies shell & fixed actions.
    dialog.dataset.modalSystem=D;
    const header=document.createElement('div'),body=document.createElement('div'),footer=document.createElement('div');
    header.className='modal-header';body.className='modal-body';footer.className='modal-footer';
@@ -29,8 +28,6 @@
    let content=first(dialog,':scope > .dialog-pad, :scope > .hybrid-dialog-inner, :scope > .vehicle-detail-layout, :scope > .product-detail-grid');
    if(!content){content=document.createElement('div');for(const node of array(dialog))if(node!==close)content.append(node);}
    if(content.parentNode===dialog)body.append(content);
-   // D5 Booking states have different titles and actions. Never hoist a title
-   // from the hidden DEMO state or an error-only Retry into a permanent shell.
    const bookingStatus=dialog.classList.contains('booking-submit-dialog');
    if(bookingStatus){
      const states=Array.from(body.querySelectorAll('.booking-submit-state > section'));
@@ -43,19 +40,16 @@
          label.textContent=active?.querySelector('.kicker')?.textContent||'REZERVACIJA';
          title.textContent=active?.querySelector('h2')?.textContent||'Status zahteva';
        };
-       for(const state of states){
-         new MutationObserver(refresh).observe(state,{attributes:true,attributeFilter:['hidden']});
-       }
+       for(const state of states)new MutationObserver(refresh).observe(state,{attributes:true,attributeFilter:['hidden']});
        refresh();
      }
    }else{
-     // Other modals retain their existing fixed heading and actions.
      const kicker=first(body,'.kicker:not(.detail-body .kicker)'),head=first(body,'h2:not(.detail-body h2)');
      if(kicker)header.append(kicker);
      if(head)header.append(head);
    }
-   // Product detail uses product name updated later: keep in body to avoid changing existing script assumptions.
-   if(dialog.id==='productDialog'){header.insertBefore(Object.assign(document.createElement('div'),{className:'kicker',textContent:'PROIZVOD'}),header.firstChild);
+   if(dialog.id==='productDialog'){
+     header.insertBefore(Object.assign(document.createElement('div'),{className:'kicker',textContent:'PROIZVOD'}),header.firstChild);
      const acts=first(body,'.detail-actions');if(acts)footer.append(acts);
    }else if(dialog.id==='orderDialog'){
      const submit=first(body,'#orderSubmit');
@@ -73,19 +67,14 @@
    }
    dialog.append(header,body,footer);
    dialogOpen(dialog);
-   // Native focus fallback if scripts call showModal() after moving DOM nodes.
    const unlockIfNone=()=>{if(!document.querySelector('dialog.site-dialog[open]'))document.documentElement.classList.remove('has-site-modal')};
    dialog.addEventListener('close',unlockIfNone);
    dialog.addEventListener('cancel',unlockIfNone);
    let wasOpen=dialog.open;
    new MutationObserver(()=>{if(dialog.open){document.documentElement.classList.add('has-site-modal');dialogOpen(dialog);
      if(!wasOpen){
-       // Native dialog autofocus sometimes scrolls directly to the first field,
-       // hiding the image/title on small portrait screens. Always start at top.
        wasOpen=true;body.scrollTop=0;
-       requestAnimationFrame(()=>{if(dialog.open){
-         first(header,'.dialog-close')?.focus({preventScroll:true});body.scrollTop=0;
-       }});
+       requestAnimationFrame(()=>{if(dialog.open){first(header,'.dialog-close')?.focus({preventScroll:true});body.scrollTop=0;}});
      }
      }else{
        wasOpen=false;
@@ -97,6 +86,22 @@
    const reduces=matchMedia('(prefers-reduced-motion:reduce)').matches;
    const welcome=document.querySelector('#welcomeDialog');
    if(welcome){
+     if(!document.getElementById('ws-welcome-layout-v482')){
+       const style=document.createElement('style');
+       style.id='ws-welcome-layout-v482';
+       style.textContent=`
+html body dialog.site-dialog[data-modal-system="v419"].welcome-dialog{height:fit-content!important;max-height:min(92dvh,760px)!important}
+.site-dialog[data-modal-system="v419"].welcome-dialog .modal-body{flex:0 1 auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+.site-dialog[data-modal-system="v419"] .welcome-stage{height:auto!important;min-height:0!important;padding:0 58px!important;background:transparent!important;box-shadow:none!important}
+.site-dialog[data-modal-system="v419"] .welcome-photo{display:block!important;width:100%!important;height:auto!important;max-width:100%!important;max-height:min(52dvh,420px)!important;margin:0 auto!important;object-fit:contain!important;object-position:center!important}
+@media(max-width:520px){
+ html body dialog.site-dialog[data-modal-system="v419"].welcome-dialog{width:min(94vw,430px)!important;max-width:94vw!important;height:fit-content!important;max-height:92dvh!important}
+ .site-dialog[data-modal-system="v419"].welcome-dialog .modal-body{flex:0 1 auto!important;padding:10px!important}
+ .site-dialog[data-modal-system="v419"] .welcome-stage{padding:0 24px!important;background:transparent!important}
+ .site-dialog[data-modal-system="v419"] .welcome-photo{width:100%!important;height:auto!important;max-height:42dvh!important}
+}`;
+       document.head.append(style);
+     }
      const close=()=>{if(welcome.open)welcome.close()};
      welcome.querySelector('#welcomeContinue')?.addEventListener('click',close);
      welcome.querySelector('.dialog-close')?.addEventListener('click',close);
@@ -126,7 +131,6 @@
      const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target)}}),{threshold:0,rootMargin:'0px 0px 0px 0px'});
      for(const section of document.querySelectorAll('main > .site-section,main > .tasting,main > .hybrid-section')){
        section.dataset.reveal='';io.observe(section);
-       // Avoid white/blank content before first observer paint (important inside preview iframe).
        if(section.getBoundingClientRect().top < window.innerHeight+100)section.classList.add('is-visible');
      }
      document.documentElement.classList.add('js-motion');
