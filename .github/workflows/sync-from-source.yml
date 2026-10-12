@@ -1,0 +1,66 @@
+name: Sync public build from canonical source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-from-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout public deploy repo
+        uses: actions/checkout@v4
+        with:
+          path: public
+          fetch-depth: 1
+
+      - name: Fetch canonical source checkpoint
+        run: |
+          git init source
+          cd source
+          git remote add origin https://github.com/retailmediacenter/web-solutions.git
+          git fetch --depth=1 origin 90975afcf926aff1720570890de7b7ea10113a25
+          git checkout --detach FETCH_HEAD
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.15.0'
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Install and build canonical client
+        working-directory: source
+        env:
+          VITE_API_BASE_URL: https://rmc-web-solutions-api-prod.onrender.com
+          VITE_BASE_PATH: /web-solutions-public/
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build -w client
+          touch client/dist/.nojekyll
+
+      - name: Replace public deploy contents
+        run: |
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            source/client/dist/ public/
+
+      - name: Commit synchronized build
+        working-directory: public
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'Public repo is already synchronized.'
+            exit 0
+          fi
+          git commit -m 'Sync public build from canonical source 90975af'
+          git push origin main
