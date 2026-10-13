@@ -1,0 +1,49 @@
+name: TEMP refresh MVP demos
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/tmp-refresh-mvp-demos.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decode refreshed demos
+        shell: bash
+        run: |
+          set -euo pipefail
+          decode(){ base64 -d "$1" | gzip -d > "$2"; }
+          decode tmp-mvp/salon.b64 demo-previews/salon/index.html
+          decode tmp-mvp/pizzeria.b64 demo-previews/pizzeria/index.html
+          decode tmp-mvp/auto-service.b64 demo-previews/auto-service/index.html
+          decode tmp-mvp/vinoteka.b64 demo-previews/vinoteka/index.html
+          decode tmp-mvp/namestaj.b64 demo-previews/namestaj/index.html
+          decode tmp-mvp/optika.b64 demo-previews/optika/index.html
+          decode tmp-mvp/visual-system.b64 visual-system.css
+          for slug in salon pizzeria auto-service vinoteka namestaj optika; do
+            grep -q 'ZAŠTO NAM VERUJU' "demo-previews/$slug/index.html"
+            grep -q 'Najčešća pitanja' "demo-previews/$slug/index.html"
+          done
+          grep -q 'V48.7.1 structured-module style parity' visual-system.css
+
+      - name: Commit refreshed demos and self-clean
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf tmp-mvp
+          rm -f .github/workflows/tmp-refresh-mvp-demos.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name 'RMC Web Solutions Deploy'
+          git config user.email 'deploy@retailmediacenter.com'
+          git add -A
+          git commit -m 'Deploy refreshed MVP 1.0 demos'
+          git push origin main
