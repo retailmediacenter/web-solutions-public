@@ -48,4 +48,4 @@ jobs:
           git commit -m 'Deploy refreshed MVP 1.0 demos'
           git push origin main
 
-# diagnostic retry
+# retry wine payload
