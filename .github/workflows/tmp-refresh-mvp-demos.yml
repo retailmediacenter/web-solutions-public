@@ -16,53 +16,34 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Decode refreshed public build files
+      - name: Download verified MVP build artifact
         shell: bash
         run: |
           set -euo pipefail
-          decode(){ echo "DECODING $1 -> $2"; base64 -d "$1" | gzip -d > "$2"; }
+          curl -fL 'https://sdmntprnortheu.oaiusercontent.com/files/00000000-22a0-81f4-8334-e1210598bc8f/raw?se=2026-10-13T12%3A56%3A25Z&sp=r&sv=2026-02-06&sr=b&scid=3d8f4bd1-170c-5498-aa37-2b0aa78c2e9b&skoid=9b41a688-1b44-4731-856e-b0efcf3660ed&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-13T04%3A47%3A47Z&ske=2026-10-14T04%3A47%3A47Z&sks=b&skv=2026-02-06&sig=k5DzhFox9GX4SAYA%2BJmpdGJFdVd5JZ/bmrL2Tedl1Pw%3D' -o /tmp/mvp1.zip
+          unzip -t /tmp/mvp1.zip >/dev/null
 
-          decode tmp-mvp/salon.b64 demo-previews/salon/index.html
-          decode tmp-mvp/pizzeria.b64 demo-previews/pizzeria/index.html
-          decode tmp-mvp/auto-service.b64 demo-previews/auto-service/index.html
-          decode tmp-mvp/vinoteka.b64 demo-previews/vinoteka/index.html
-          decode tmp-mvp/namestaj.b64 demo-previews/namestaj/index.html
-          decode tmp-mvp/optika.b64 demo-previews/optika/index.html
-
-          decode tmp-mvp/visual-system.b64 visual-system.css
-          decode tmp-mvp/booking-runtime.b64 booking-runtime.js
-          decode tmp-mvp/booking-css.b64 booking.css
-          decode tmp-mvp/site-system-css.b64 site-system.css
-          decode tmp-mvp/site-system-js.b64 site-system.js
-          decode tmp-mvp/export-runtime.b64 export-runtime.js
-          decode tmp-mvp/global-modal-css.b64 global-modal.css
-          decode tmp-mvp/global-modal-js.b64 global-modal.js
-
+      - name: Replace public repo with verified build
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name .github -exec rm -rf {} +
+          unzip -q /tmp/mvp1.zip -d .
           for slug in salon pizzeria auto-service vinoteka namestaj optika; do
             test -s "demo-previews/$slug/index.html"
             grep -q 'ZAŠTO NAM VERUJU' "demo-previews/$slug/index.html"
             grep -q 'Najčešća pitanja' "demo-previews/$slug/index.html"
           done
+          test -s showcase/index.html
+          test -s index.html
 
-          grep -q 'V48.7.1 structured-module style parity' visual-system.css
-          test -s booking-runtime.js
-          test -s booking.css
-          test -s site-system.css
-          test -s site-system.js
-          test -s export-runtime.js
-          test -s global-modal.css
-          test -s global-modal.js
-
-      - name: Commit refreshed build and self-clean
+      - name: Commit public MVP build and self-clean
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf tmp-mvp
-          rm -f .github/workflows/tmp-refresh-mvp-demos.yml
-          rmdir .github/workflows 2>/dev/null || true
-          rmdir .github 2>/dev/null || true
+          rm -rf .github tmp-mvp
           git config user.name 'RMC Web Solutions Deploy'
           git config user.email 'deploy@retailmediacenter.com'
           git add -A
-          git commit -m 'Deploy refreshed MVP 1.0 public build'
+          git commit -m 'Deploy MVP 1.0 public build'
           git push origin main
