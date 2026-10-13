@@ -14,6 +14,10 @@ if(description)description.textContent='Izaberite željeni termin. Zahtev pripre
 const submit=form.querySelector('[type="submit"]');
 if(submit)submit.textContent='Pripremi zahtev za termin';
 
+// Manual request is a normal share dialog, not a Portal booking-status dialog.
+// Remove the status class before global-modal.js initializes so its actions
+// are moved into the standard fixed modal footer on desktop and mobile.
+dialog.classList.remove('booking-submit-dialog');
 dialog.setAttribute('aria-label','Pripremljen zahtev');
 dialog.innerHTML='<button class="dialog-close" type="button" data-close aria-label="Zatvori">×</button><div class="dialog-pad"><div class="kicker">ZAHTEV ZA TERMIN</div><h2>Poruka je spremna</h2><p>Zahtev još nije poslat. Izaberite kanal komunikacije.</p><pre id="requestMessage"></pre><div class="dialog-actions"><button id="copyRequest" class="primary" type="button">Kopiraj zahtev</button><a id="viberRequest" class="secondary" rel="noopener noreferrer" target="_blank">Viber</a><a id="waRequest" class="secondary" rel="noopener noreferrer" target="_blank">WhatsApp</a></div><p class="hint">Termin nije automatski potvrđen. Salon odgovara nakon prijema poruke.</p><p id="copyRequestStatus" role="status"></p></div>';
 
