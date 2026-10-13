@@ -13,14 +13,12 @@
  }
  const badge=document.querySelector('[data-system="demoBadge"]');
  if(badge){
-  // Light integrity against accidental DOM removal, not a claim of DRM for a downloadable HTML site.
   const parent=badge.parentNode,next=badge.nextSibling;
   if(parent){new MutationObserver(()=>{if(!badge.isConnected&&parent.isConnected){
     parent.insertBefore(badge,next&&next.parentNode===parent?next:null);
   }}).observe(parent,{childList:true});}
-
   const update=()=>{
-   if(getComputedStyle(badge).position==='sticky')return; // mobile badge follows sticky header, never overlaps bottom CTAs
+   if(getComputedStyle(badge).position==='sticky')return;
    let clear=70;
    const vw=innerWidth,vh=innerHeight;
    if(vw>720){badge.style.removeProperty('--ws-badge-safe-bottom');return;}
@@ -29,7 +27,7 @@
     if(item===badge||item.hidden)continue;
     const r=item.getBoundingClientRect(),cs=getComputedStyle(item);
     if(cs.visibility==='hidden'||cs.display==='none'||r.width<10||r.height<10||r.bottom<vh-135||r.top>vh)continue;
-    if(r.left>Math.min(vw*.5,badge.getBoundingClientRect().right)+12)continue; // Do not lift for right-only elements.
+    if(r.left>Math.min(vw*.5,badge.getBoundingClientRect().right)+12)continue;
     clear=Math.max(clear,vh-r.top+10);
    }
    const room=vh-badge.getBoundingClientRect().height-65;
@@ -47,7 +45,7 @@
   document.documentElement.dataset.showcase='pizzeria';
   const byTitle=title=>[...document.querySelectorAll('.service-card')].find(card=>card.querySelector('h3')?.textContent.trim()===title);
   const imageMap={
-   'Specijalitet kuće':'../../assets/images/curated/food/restaurant/services/restaurant_product_02_spaghetti.jpg',
+   'Specijalitet kuće':'assets/images/curated/food/restaurant/services/restaurant_product_03_biftek.jpg',
    'Pice':'../../assets/images/curated/food/restaurant/services/restaurant_product_pizza_margherita_01.jpg',
    'Domaći desert':'../../assets/images/curated/food/restaurant/services/restaurant_product_vegetarian_bowl_01.jpg'
   };
