@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          decode(){ base64 -d "$1" | gzip -d > "$2"; }
+          decode(){ echo "DECODING $1"; base64 -d "$1" | gzip -d > "$2"; }
           decode tmp-mvp/salon.b64 demo-previews/salon/index.html
           decode tmp-mvp/pizzeria.b64 demo-previews/pizzeria/index.html
           decode tmp-mvp/auto-service.b64 demo-previews/auto-service/index.html
@@ -48,4 +48,4 @@ jobs:
           git commit -m 'Deploy refreshed MVP 1.0 demos'
           git push origin main
 
-# retry after payload repair
+# diagnostic retry
