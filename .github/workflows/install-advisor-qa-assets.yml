@@ -1,0 +1,38 @@
+name: Install Advisor QA restaurant assets
+
+on:
+  push:
+    paths:
+      - '.github/workflows/install-advisor-qa-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_URL: 'https://sdmntprdenmarkeast.oaiusercontent.com/files/00000000-fb60-8210-b331-7a8d6d28851e/raw?se=2026-10-15T13%3A34%3A40Z&sp=r&sv=2026-02-06&sr=b&scid=87d9ac85-41aa-5087-83bd-c0d62e7cd44c&skoid=9b41a688-1b44-4731-856e-b0efcf3660ed&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-15T04%3A52%3A54Z&ske=2026-10-16T04%3A52%3A54Z&sks=b&skv=2026-02-06&sig=BVOEI1y6lqiWjnJQ7rpCy9C/KUR27nDbuOpQvHM6EaY%3D'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download QA bundle
+        run: |
+          curl -fsSL "$ARTIFACT_URL" -o /tmp/qa.zip
+          rm -rf /tmp/qa && mkdir -p /tmp/qa
+          unzip -q /tmp/qa.zip -d /tmp/qa
+      - name: Install restaurant QA assets
+        run: |
+          target='assets/images/curated/food/restaurant/services'
+          mkdir -p "$target"
+          cp /tmp/qa/$target/restaurant_product_specialitet_2026.jpg "$target/"
+          cp /tmp/qa/$target/restaurant_product_desert_2026.jpg "$target/"
+          test -s "$target/restaurant_product_specialitet_2026.jpg"
+          test -s "$target/restaurant_product_desert_2026.jpg"
+      - name: Commit QA assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/images/curated/food/restaurant/services/restaurant_product_specialitet_2026.jpg assets/images/curated/food/restaurant/services/restaurant_product_desert_2026.jpg
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add current restaurant images for Advisor QA'
+          git push
